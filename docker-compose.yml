@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  mariadb:
+    image: mysql:8.0
+    networks:
+      - net
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=root
+      - MYSQL_ROOT_PASSWORD=root
+
+  composer:
+    networks:
+      - net
+    image: composer:1.7
+    volumes:
+      - ./:/app/
+      - composer_cache:/home/docker/composer
+    ports:
+      - "8000:8000"
+    command: bash -c "composer install; composer run-script serve"
+
+volumes:
+  composer_cache:
+    driver: local
+  mariadb_data:
+    driver: local
+
+networks:
+  net:
+    driver: bridge
