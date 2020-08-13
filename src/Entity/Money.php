@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\MoneyRepository;
+use App\Utils\MoneyTransformerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,15 +19,20 @@ class Money
     /**
      * @ORM\Column(type="integer", options={ "default" = 0 })
      */
-    private $amount;
+	private int $amount;
 
     /**
      * @Assert\Choice(choices = {"EUR", "GBP", "USD"})
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default"="EUR"})
      */
-    private $currency;
+	private string $currency;
 
-    public function getAmount(): ?int
+	public function __construct(int $amount, string $currency) {
+	    $this->amount = $amount;
+	    $this->currency = $currency;
+    }
+
+	public function getAmount(): ?int
     {
         return $this->amount;
     }
@@ -48,5 +54,12 @@ class Money
         $this->currency = $currency;
 
         return $this;
+    }
+
+    public function areCurrenciesEqual(string $currency) {
+		if (strtoupper($this->currency) === strtoupper($currency)) {
+			return true;
+		}
+		return false;
     }
 }

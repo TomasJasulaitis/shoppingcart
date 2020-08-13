@@ -10,8 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=CartRepository::class)
  */
-class Cart
-{
+class Cart {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -63,5 +62,17 @@ class Cart
         }
 
         return $this;
+    }
+
+    //TODO padaryti, kad currencies pakeistu total
+    public function getTotalPrice() {
+    	$total = 0.0;
+	    /**
+	     * @var CartProduct $cartProduct
+	     */
+    	foreach ($this->cartProducts as $cartProduct) {
+    		$total += $cartProduct->getQuantity() * $cartProduct->getProduct()->getPrice()->getAmount();
+	    }
+    	return $total;
     }
 }

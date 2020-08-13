@@ -15,16 +15,16 @@ class Product
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private string $name;
 	/**
 	 * @ORM\Embedded(class="Money")
 	 */
-    private $price;
+    private Money $price;
 
     public function getId(): ?int
     {
