@@ -33,7 +33,11 @@ class CartProduct {
      */
     private $cart;
 
-    public function getId(): ?int
+    public function __toString() {
+    	return "\nProduct: ".$this->getProduct()." | Quantity:".$this->getQuantity();
+    }
+
+	public function getId(): ?int
     {
         return $this->id;
     }

@@ -32,6 +32,10 @@ class Money
 	    $this->currency = $currency;
     }
 
+    public function __toString() {
+		return "Amount: ".$this->getAmount()." Currency: ".$this->getCurrency();
+    }
+
 	public function getAmount(): ?int
     {
         return $this->amount;

@@ -26,7 +26,11 @@ class Product
 	 */
     private Money $price;
 
-    public function getId(): ?int
+    public function __toString() {
+    	return "Id: ".$this->getId()." | Name: ".$this->getName()." | Price: ".$this->getPrice();
+    }
+
+	public function getId(): ?int
     {
         return $this->id;
     }
