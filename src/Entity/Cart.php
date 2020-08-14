@@ -60,19 +60,6 @@ class Cart {
                 $cartProduct->setCart(null);
             }
         }
-
         return $this;
-    }
-
-    //TODO padaryti, kad currencies pakeistu total
-    public function getTotalPrice() {
-    	$total = 0.0;
-	    /**
-	     * @var CartProduct $cartProduct
-	     */
-    	foreach ($this->cartProducts as $cartProduct) {
-    		$total += $cartProduct->getQuantity() * $cartProduct->getProduct()->getPrice()->getAmount();
-	    }
-    	return $total;
     }
 }

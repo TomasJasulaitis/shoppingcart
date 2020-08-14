@@ -8,53 +8,62 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
  */
-class Product
-{
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private int $id;
+class Product {
+	/**
+	 * @ORM\Id()
+	 * @ORM\GeneratedValue()
+	 * @ORM\Column(type="integer")
+	 */
+	private int $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $name;
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private string $name;
 	/**
 	 * @ORM\Embedded(class="Money")
 	 */
-    private Money $price;
+	private Money $price;
 
-    public function __toString() {
-    	return "Id: ".$this->getId()." | Name: ".$this->getName()." | Price: ".$this->getPrice();
-    }
+	/**
+	 * @ORM\Column(type="string", length=255)
+	 */
+	private string $code;
 
-	public function getId(): ?int
-    {
-        return $this->id;
-    }
+	public function __toString() {
+		return "Code: ".$this->getCode()." | Name: ".$this->getName()." | Price: ".$this->getPrice();
+	}
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getId(): ?int {
+		return $this->id;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function getName(): ?string {
+		return $this->name;
+	}
 
-        return $this;
-    }
+	public function setName(string $name): self {
+		$this->name = $name;
 
-	public function getPrice(): Money
-	{
+		return $this;
+	}
+
+	public function getPrice(): Money {
 		return $this->price;
 	}
 
-	public function setPrice(Money $price): self
-	{
+	public function setPrice(Money $price): self {
 		$this->price = $price;
+
+		return $this;
+	}
+
+	public function getCode(): ?string {
+		return $this->code;
+	}
+
+	public function setCode(string $code): self {
+		$this->code = $code;
 
 		return $this;
 	}

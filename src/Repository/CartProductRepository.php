@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Cart;
 use App\Entity\CartProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,16 @@ class CartProductRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, CartProduct::class);
+    }
+
+    public function findByCode($code, Cart $cart) {
+
+	    return $this->createQueryBuilder('c')
+//		    ->leftJoin('App\Entity\CartProduct', 'cp')
+		    ->setMaxResults(1)
+		    ->getQuery()
+		    ->getOneOrNullResult()
+		    ;
     }
 
     // /**

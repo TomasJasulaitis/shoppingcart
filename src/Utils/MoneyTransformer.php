@@ -7,15 +7,23 @@ use App\Entity\Money;
 final class MoneyTransformer {
 
 	private array $currencyRates;
+	private string $defaultCurrency;
 
-	public function __construct($currencyRates) { //Filled from services.yaml
+	public function __construct($currencyRates, $defaultCurrency) { //Filled from services.yaml
 		$this->currencyRates = $currencyRates;
+		$this->defaultCurrency = $defaultCurrency;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public function transform(Money $money, $currency) {
+
+		$currentCurrency = $money->getCurrency();
+
+		if (empty($currentCurrency)) {
+			$money->setCurrency($this->defaultCurrency);
+		}
 
 		if ($money->areCurrenciesEqual($currency)) {
 			return $money->getAmount();

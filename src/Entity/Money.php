@@ -22,7 +22,6 @@ class Money
 	private int $amount;
 
     /**
-     * @Assert\Choice(choices = {"EUR", "GBP", "USD"})
      * @ORM\Column(type="string", length=255, options={"default"="EUR"})
      */
 	private string $currency;
