@@ -20,16 +20,6 @@ class CartProductRepository extends ServiceEntityRepository
         parent::__construct($registry, CartProduct::class);
     }
 
-    public function findByCode($code, Cart $cart) {
-
-	    return $this->createQueryBuilder('c')
-//		    ->leftJoin('App\Entity\CartProduct', 'cp')
-		    ->setMaxResults(1)
-		    ->getQuery()
-		    ->getOneOrNullResult()
-		    ;
-    }
-
     // /**
     //  * @return CartProduct[] Returns an array of CartProduct objects
     //  */

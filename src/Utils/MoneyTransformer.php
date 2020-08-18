@@ -30,10 +30,6 @@ final class MoneyTransformer {
 		}
 		$baseCurrency = $this->currencyRates[strtoupper($money->getCurrency())];
 		$exchangeRate = $baseCurrency[strtoupper($currency)];
-//		dump('Currency '.$money->getCurrency());
-//		dump('Exchange Rate '.$exchangeRate);
-//		dump('Amount '.$money->getAmount());
-//		dump('Transformed '.$money->getAmount() * $exchangeRate);
 		return $money->getAmount() * $exchangeRate;
 	}
 }

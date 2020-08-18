@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,9 +27,16 @@ class Product {
 	private Money $price;
 
 	/**
-	 * @ORM\Column(type="string", length=255)
+	 * @ORM\Column(unique=true, type="string", length=255)
 	 */
 	private string $code;
+
+	/**
+	 * @var CartProduct[]|ArrayCollection $cartProducts
+	 * @ORM\OneToMany(targetEntity="App\Entity\CartProduct", mappedBy="product")
+	 *
+	 */
+	private $cartProducts;
 
 	public function __toString() {
 		return "Code: ".$this->getCode()." | Name: ".$this->getName()." | Price: ".$this->getPrice();
@@ -67,4 +75,5 @@ class Product {
 
 		return $this;
 	}
+
 }

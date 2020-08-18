@@ -19,6 +19,19 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+	/**
+	 * @param $value
+	 * @return mixed
+	 * @throws \Doctrine\ORM\NonUniqueResultException
+	 */
+    public function findOneByCode($value) {
+    	return $this->createQueryBuilder('p')
+		    ->where('p.code = :val')
+		    ->setParameter('val', $value)
+		    ->getQuery()
+		    ->getOneOrNullResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

@@ -58,32 +58,38 @@ class HandleCartCommand extends Command {
 
 		//CSV is possible with only one delimiter.
 		$this->fileHandler->replaceDelimiters($this->getCsvPath(), ';');
-		$productData = $this->csvEncoder->decode(file_get_contents($this->getCsvPath()), CsvEncoder::FORMAT, [CsvEncoder::DELIMITER_KEY => ';']);
-		$cart = $this->cartRepository->find(3);
+		$productData = $this->csvEncoder->decode(
+			file_get_contents($this->getCsvPath()),
+			CsvEncoder::FORMAT,
+			[CsvEncoder::DELIMITER_KEY => ';']
+		);
 
-		$usableData = $productData[0];
-		dump($usableData);
+		$cart = new Cart();
 
-		$product = new Product();
-		$product->setName($usableData['product_name']);
-		$product->setCode($usableData['product_code']);
-		$product->setPrice(new Money((int)$usableData['product_price'] * 100, $usableData['product_currency']));
-		$this->entityManager->persist($product);
-		$this->entityManager->flush();
+		$io->writeln('<info>Starting command</info>');
+		foreach ($productData as $data) {
 
-        $cartProduct = new CartProduct();
-        $cartProduct->setProduct($product);
-        $cartProduct->setQuantity($usableData['product_quantity']);
-        $cartProduct->setCart($cart);
+			try {
+				$product = $this->entityManager->getRepository(Product::class)->findOneByCode($data['product_code']);
+				$cartProduct = new CartProduct();
+				$cartProduct->setProduct($product);
+				$cartProduct->setQuantity($data['product_quantity']);
+				$cartProduct->setCart($cart);
 
-		$io->write($this->cartHandler->handleCartProduct($cart, $cartProduct));
-
-		$io->write(sprintf("\nCart products:"));
-		foreach ($cart->getCartProducts() as $cartProduct) {
-			$io->write(sprintf('<info>%s</info>', $cartProduct));
+				$commandResult = $this->cartHandler->handleCartProduct($cart, $cartProduct);
+				$io->writeln($commandResult);
+				$io->write('Cart products:');
+				foreach ($cart->getCartProducts() as $cartProduct) {
+					$io->write(sprintf('<info>%s</info>', $cartProduct));
+				}
+				$io->writeln('');
+				$io->writeln(sprintf("<info>Current total is: %.2f </info>", $this->cartHandler->getCartTotal($cart)));
+			} catch (\Exception $exception) {
+				$io->writeln('Exception:'.$exception->getMessage());
+				return Command::FAILURE;
+			}
 		}
-		$io->write(sprintf("\n<info>Current total is: %.2f </info>", $this->cartHandler->getCartTotal($cart)));
-		return 0;
+		return Command::SUCCESS;
 	}
 
 	private function getCsvPath() {
